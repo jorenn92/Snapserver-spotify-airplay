@@ -31,14 +31,16 @@ if [ ! -z "$DEVICES" ]; then
 	for element in "${DEVICES[@]}"
 	do
 		i=$(($i+1))
-		/usr/local/bin/librespot --name ${element} --bitrate 320 --backend pipe --device /tmp/${element}_pipe_spotify --cache /tmp/cache/spotify_${element} --initial-volume 50 --enable-volume-normalisation --autoplay &
+	#	/usr/local/bin/librespot --name ${element} --bitrate 320 --backend pipe --device /tmp/${element}_pipe_spotify --cache /tmp/cache/spotify_${element} --initial-volume 50 --enable-volume-normalisation --autoplay &
 		# create config & start shairport
-		create_shairport_config ${element} 500$(($i-1))
-		/usr/local/bin/shairport-sync --configfile=/usr/local/etc/shairport-sync-${element}.conf &
+	#	create_shairport_config ${element} 500$(($i-1))
+	#	/usr/local/bin/shairport-sync --configfile=/usr/local/etc/shairport-sync-${element}.conf &
 		# Add to snapserver sources
-		SOURCES="${SOURCES} \n source = pipe:///tmp/${element}_pipe_spotify?name=Spotify%20${element}\&dryout_ms=2000\&sampleformat=44100:16:2\&codec=null\&buffer=1000"
-		SOURCES="${SOURCES} \n source = pipe:///tmp/${element}_pipe_airplay?name=Airplay%20${element}\&dryout_ms=2000\&sampleformat=44100:16:2\&codec=null\&buffer=1000"
-		SOURCES="${SOURCES} \n source = meta:///Spotify%20${element}/Airplay%20${element}?name=${element}\&sampleformat=44100:16:2\&codec=flac\&buffer=1000"
+		#SOURCES="${SOURCES} \n source = pipe:///tmp/${element}_pipe_spotify?name=Spotify%20${element}\&dryout_ms=2000\&sampleformat=44100:16:2\&codec=null\&buffer=1000"
+		SOURCES="${SOURCES} \n source = spotify:///librespot?name=Spotify%20${element}\&devicename=${element}\&bitrate=320\&volume=50\&cache=/tmp/cache/spotify_${element}\&killall=false\&dryout_ms=2000\&sampleformat=44100:16:2\&codec=null"
+		#SOURCES="${SOURCES} \n source = pipe:///tmp/${element}_pipe_airplay?name=Airplay%20${element}\&dryout_ms=2000\&sampleformat=44100:16:2\&codec=null\&buffer=1000"
+		SOURCES="${SOURCES} \n source = airplay:///shairport-sync?name=Airplay%20${element}\&devicename=${element}\&dryout_ms=2000\&sampleformat=44100:16:2\&codec=null\&port=500$(($i-1))"
+		SOURCES="${SOURCES} \n source = meta:///Spotify%20${element}/Airplay%20${element}?name=${element}\&sampleformat=44100:16:2\&codec=flac"
 	done
 		
 else # else use 'SPOTIFY_DEVICES' & 'AIRPLAY_DEVICES'
