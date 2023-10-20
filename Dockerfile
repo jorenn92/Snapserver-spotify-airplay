@@ -20,7 +20,7 @@ FROM node:lts-alpine AS REACT-BUILDER
 RUN apk -U add git \
  && git clone "https://github.com/jorenn92/Snapweb.git" \
  && cd Snapweb \
- && npm ci \
+ && npm ci --force \
  && npm run build
 
 RUN apk update
