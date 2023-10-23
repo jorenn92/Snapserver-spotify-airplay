@@ -1,3 +1,5 @@
+# TODO: build snapserver with -DHAS_EXPAT & -lexpat https://github.com/badaix/snapcast/issues/672 https://github.com/badaix/snapcast/commit/fdcdf8e350e10374452a091fc8fa9e50641b9e86
+
 FROM alpine:latest AS LIBRE-BUILDER
 
 ARG TARGETPLATFORM
@@ -118,6 +120,7 @@ RUN env \
 
 COPY run.sh /
 COPY shairport-sync.conf /usr/local/etc/shairport-sync-sample.conf
+COPY meta_librespot-java.py /usr/share/snapserver/plug-ins/meta_librespot-java.py
 COPY --from=LIBRE-BUILDER /librespot/target/release/librespot /usr/local/bin/
 COPY --from=LIBRE-BUILDER /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=REACT-BUILDER /Snapweb/build /usr/share/snapserver/snapweb
