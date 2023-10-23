@@ -2,6 +2,8 @@
 Simple SnapCast server with multiple Spotify & Airplay sources.
 Based on Alpine.
 
+Uses custom SnapWeb: https://github.com/jorenn92/Snapweb
+
 ```
 version: '3'
 services:
